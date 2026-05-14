@@ -13,3 +13,6 @@ incremental_db/
 # Temp
 *.tmp
 *.bak
+
+
+*.wcfg

@@ -20,5 +20,5 @@ A simple Verilog FPGA project that changes RGB LED colours using clock division.
 
 ### RGB Output
 
-![Output](outputs/rgb_output.mp4)
+<video controls src="rgb_output.mp4" title="Output[rgb_cycler]"></video>
 

@@ -8,4 +8,4 @@ Collection of FPGA and Verilog projects built while learning digital design.
 - External LEDs
 
 ## Projects
-- [RGB LED Controller] (projects/rgb_led/README.md)
+- [RGB LED Controller] (./projects/rgb_led/README.md)

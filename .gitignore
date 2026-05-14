@@ -1,0 +1,15 @@
+# Vivado
+*.jou
+*.log
+*.str
+*.cache
+*.runs
+*.Xil
+
+# Quartus
+db/
+incremental_db/
+
+# Temp
+*.tmp
+*.bak

@@ -1,0 +1,24 @@
+# RGB LED Controller
+
+A simple Verilog FPGA project that changes RGB LED colours using clock division.
+
+## Features
+- RGB colour cycling
+- Common-anode LED support
+- FPGA GPIO control
+
+## Hardware Used
+- Shrike Lite FPGA
+- External RGB LED
+- Breadboard
+
+## Images
+
+### FPGA Setup
+
+![Setup](images/fpga_setup.jpg)
+
+### RGB Output
+
+![Output](images/rgb_output.jpg)
+

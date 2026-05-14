@@ -1,4 +1,4 @@
-#On-Board LED Blinker
+##On-Board LED Blinker
 
 A simple setup used to test the FPGA
 

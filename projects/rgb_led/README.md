@@ -12,6 +12,12 @@ A simple Verilog FPGA project that changes RGB LED colours using clock division.
 - External RGB LED
 - Breadboard
 
+## Pinouts
+-   Red channel    : F0
+-   Green channel  : F18
+-   Blue channel   : F17
+-   Vcc            : 3.3v
+
 ## Images
 
 ### FPGA Setup

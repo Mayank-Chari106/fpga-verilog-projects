@@ -26,5 +26,7 @@ A simple Verilog FPGA project that changes RGB LED colours using clock division.
 
 ### RGB Output
 
+https://github.com/user-attachments/assets/31ef13d2-25d2-4a82-8923-28d50400c83d
+
 
 

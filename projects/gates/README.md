@@ -34,6 +34,6 @@ In the future:
 
 ### FPGA Setup
 
-![Setup](outputs/gates_setup.jpeg)
+![Setup](outputs/gates.jpeg)
 
 ### Logic Gate Outputs

@@ -17,6 +17,6 @@ Collection of FPGA and Verilog projects built while learning digital design.
 - VS-Code (editing main.py[flashes the .bin onto FPGA])
 
 ## Projects
-- [On-Board LED Blinker] (https://github.com/Mayank-Chari106/fpga-verilog-projects/blob/main/projects/blink/README.md)
-- [RGB LED Controller] (https://github.com/Mayank-Chari106/fpga-verilog-projects/blob/main/projects/rgb_led/README.md)
-- [Logic Gates] (https://github.com/Mayank-Chari106/fpga-verilog-projects/blob/main/projects/gates/README.md)
+- [On-Board LED Blinker](projects/blink/)
+- [RGB LED Controller](projects/rgb_led/)
+- [Logic Gates](projects/gates/)

@@ -43,6 +43,9 @@ The project uses 3-bit input switches to control LED brightness levels.
 | S2 | F12 | Input |
 | Y  | F0 | Output |
 
+## Setup
+
+add setup image
 
 ---
 
@@ -74,11 +77,11 @@ This value controls the duty cycle of the output LED.
   - Lower brightness → shorter ON time
 ---
 
-## Output Behaviour
+## Output 
 
-- Switch `000` → LED OFF
-- Switch `100` → Maximum brightness
-- Intermediate values → Smooth brightness steps
+
+add output video
+
 
 ---
 

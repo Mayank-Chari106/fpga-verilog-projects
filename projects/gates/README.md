@@ -89,17 +89,16 @@ The system demonstrates:
 
 using a single FPGA design.
 
-|Gate|Select Line Binary Code|
-|  Y  | S2 | S1 | S0 |
-|  AND  | 0 | 0 | 0 |
-|  OR  | 0 | 0 | 1 |
-|  XOR  | 0 | 1 | 0 |
-|  NAND  | 1 | 1 | 1 |
-|  NOR  | 1 | 0 | 0 |
-|  XNOR  | 1 | 0 | 1 |
-|  NOT A  | 1 | 1 | 0 |
-|  NOT B  | 1 | 1 | 1 |
-
+| Gate  | S2 | S1 | S0 |
+|---|---|---|---|
+| AND   | 0 | 0 | 0 |
+| OR    | 0 | 0 | 1 |
+| XOR   | 0 | 1 | 0 |
+| NAND | 0 | 1 | 1 |
+| NOR   | 1 | 0 | 0 |
+| XNOR  | 1 | 0 | 1 |
+| NOT A | 1 | 1 | 0 |
+| NOT B  | 1 | 1 | 1 |
 
 
 ---

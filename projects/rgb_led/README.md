@@ -48,7 +48,7 @@ A simple Verilog FPGA project that cycles RGB LED colours using clock division o
 
 ## Demo Video
 
-![Watch Demo Video] (https://youtu.be/CQKoOnbd4jM)
+
 
 ---
 

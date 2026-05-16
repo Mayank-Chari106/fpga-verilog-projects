@@ -20,4 +20,4 @@ Collection of FPGA and Verilog projects built while learning digital design.
 - [On-Board LED Blinker](projects/blink/)
 - [RGB LED Controller](projects/rgb_led/)
 - [Logic Gates](projects/gates/)
-- [PWM LED Brightness Controller](projects/PWM/)
+- [PWM LED Brightness Controller](projects/pwm/)

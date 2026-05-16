@@ -1,22 +1,42 @@
 # RGB LED Controller
 
-A simple Verilog FPGA project that changes RGB LED colours using clock division.
+A simple Verilog FPGA project that cycles RGB LED colours using clock division on the Shrike Lite FPGA.
+
+---
 
 ## Features
 - RGB colour cycling
-- Common-anode LED support
+- Common-anode RGB LED support
 - FPGA GPIO control
+- Hardware clock division
+
+---
 
 ## Hardware Used
 - Shrike Lite FPGA
 - External RGB LED
 - Breadboard
+- Jumper wires
+
+---
+
+## Software Used
+- Go Configure
+- VS Code
+- Verilog HDL
+
+---
 
 ## Pinouts
--   Red channel    : F0
--   Green channel  : F18
--   Blue channel   : F17
--   Vcc            : 3.3v
+
+| Signal | FPGA Pin |
+|---|---|
+| Red Channel | F0 |
+| Green Channel | F18 |
+| Blue Channel | F17 |
+| VCC | 3.3V |
+
+---
 
 ## Images
 
@@ -24,9 +44,23 @@ A simple Verilog FPGA project that changes RGB LED colours using clock division.
 
 ![Setup](outputs/rgb_setup.jpeg)
 
-### RGB Output
+---
 
-https://github.com/user-attachments/assets/31ef13d2-25d2-4a82-8923-28d50400c83d
+## Demo Video
 
+https://youtu.be/CQKoOnbd4jM
 
+---
 
+## How It Works
+
+The FPGA uses a clock divider to slow down the onboard clock signal.  
+The divided clock drives a counter which changes the RGB LED output states, creating a colour-cycling effect.
+
+Because the RGB LED is common-anode, the LED channels are active-low.
+
+---
+
+## License
+
+This project is licensed under the MIT License.

@@ -5,6 +5,9 @@ A simple Verilog FPGA project that cycles RGB LED colours using clock division o
 ---
 
 ## Features
+
+---
+
 - RGB colour cycling
 - Common-anode RGB LED support
 - FPGA GPIO control
@@ -13,6 +16,9 @@ A simple Verilog FPGA project that cycles RGB LED colours using clock division o
 ---
 
 ## Hardware Used
+
+---
+
 - Shrike Lite FPGA
 - External RGB LED
 - Breadboard
@@ -21,6 +27,9 @@ A simple Verilog FPGA project that cycles RGB LED colours using clock division o
 ---
 
 ## Software Used
+
+---
+
 - Go Configure
 - VS Code
 - Verilog HDL
@@ -28,6 +37,8 @@ A simple Verilog FPGA project that cycles RGB LED colours using clock division o
 ---
 
 ## Pinouts
+
+---
 
 | Signal | FPGA Pin |
 |---|---|
@@ -48,11 +59,15 @@ A simple Verilog FPGA project that cycles RGB LED colours using clock division o
 
 ## Demo Video
 
+---
 
+https://github.com/Mayank-Chari106/fpga-verilog-projects/issues/1#issue-4459591922
 
 ---
 
 ## How It Works
+
+---
 
 The FPGA uses a clock divider to slow down the onboard clock signal.  
 The divided clock drives a counter which changes the RGB LED output states, creating a colour-cycling effect.
@@ -62,5 +77,7 @@ Because the RGB LED is common-anode, the LED channels are active-low.
 ---
 
 ## License
+
+---
 
 This project is licensed under the MIT License.

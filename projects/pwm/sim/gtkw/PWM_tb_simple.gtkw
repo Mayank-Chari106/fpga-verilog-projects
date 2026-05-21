@@ -1,0 +1,23 @@
+[*]
+[*] GTKWave Analyzer v3.3.127 (w)1999-2026 BSI
+[*] Thu May 21 18:40:54 2026
+[*]
+[dumpfile] "S:\Verilog-FPGA\projects\pwm\sim\gtkw\PWM_tb_simple.vcd"
+[savefile] "S:\Verilog-FPGA\projects\pwm\sim\gtkw\PWM_tb_simple.gtkw"
+[timestart] 0
+[size] 1920 1033
+[pos] -235 -232
+*-20.901821 146000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 246
+[signals_width] 78
+[sst_expanded] 1
+[sst_vpaned_height] 308
+@28
+PWM_tb_simple.S2
+PWM_tb_simple.S1
+PWM_tb_simple.S0
+PWM_tb_simple.clk
+@29
+PWM_tb_simple.Y
+[pattern_trace] 1
+[pattern_trace] 0

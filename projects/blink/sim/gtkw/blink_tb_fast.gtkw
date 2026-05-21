@@ -1,0 +1,20 @@
+[*]
+[*] GTKWave Analyzer v3.3.127 (w)1999-2026 BSI
+[*] Thu May 21 18:33:00 2026
+[*]
+[dumpfile] "S:\Verilog-FPGA\projects\blink\sim\gtkw\blink_tb.vcd"
+[savefile] "S:\Verilog-FPGA\projects\blink\sim\gtkw\blink_tb_fast.gtkw"
+[timestart] 0
+[size] 1920 1033
+[pos] -1 -1
+*-12.518524 45000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 246
+[signals_width] 78
+[sst_expanded] 1
+[sst_vpaned_height] 308
+@28
+blink_tb.LED
+@29
+blink_tb.clk
+[pattern_trace] 1
+[pattern_trace] 0

@@ -1,0 +1,22 @@
+[*]
+[*] GTKWave Analyzer v3.3.127 (w)1999-2026 BSI
+[*] Thu May 21 18:42:56 2026
+[*]
+[dumpfile] "S:\Verilog-FPGA\projects\rgb_led\sim\gtkw\RGB_LED_tb_fast.vcd"
+[savefile] "S:\Verilog-FPGA\projects\rgb_led\sim\gtkw\RGB_LED_tb_fast.gtkw"
+[timestart] 0
+[size] 1920 1033
+[pos] -287 -284
+*-12.802311 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 246
+[signals_width] 78
+[sst_expanded] 1
+[sst_vpaned_height] 308
+@28
+RGB_LED_tb_fast.clk
+RGB_LED_tb_fast.LEDr
+RGB_LED_tb_fast.LEDg
+@29
+RGB_LED_tb_fast.LEDb
+[pattern_trace] 1
+[pattern_trace] 0

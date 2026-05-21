@@ -1,0 +1,25 @@
+[*]
+[*] GTKWave Analyzer v3.3.127 (w)1999-2026 BSI
+[*] Thu May 21 18:36:31 2026
+[*]
+[dumpfile] "S:\Verilog-FPGA\projects\gates\sim\gtkw\Gates_tb_exhaustive.vcd"
+[savefile] "S:\Verilog-FPGA\projects\gates\sim\gtkw\gates_tb_exhaustive.gtkw"
+[timestart] 0
+[size] 1920 1080
+[pos] -131 -128
+*-15.791739 2500 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 246
+[signals_width] 148
+[sst_expanded] 1
+[sst_vpaned_height] 325
+@28
+Gates_tb_exhaustive.S0
+Gates_tb_exhaustive.S1
+Gates_tb_exhaustive.S2
+@29
+Gates_tb_exhaustive.A
+@28
+Gates_tb_exhaustive.B
+Gates_tb_exhaustive.Y
+[pattern_trace] 1
+[pattern_trace] 0

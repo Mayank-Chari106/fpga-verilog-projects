@@ -58,21 +58,6 @@ A simple Verilog FPGA system that demonstrates the operation of primitive logic 
 | Y | F0 |
 
 ---
-
-## Images
-
-### FPGA Setup
-
-![Setup](outputs/gates.jpeg)
-
----
-
-## Logic Gate Outputs
-
-Add output images or videos here.
-
----
-
 ## How It Works
 
 The FPGA reads the select-line inputs to determine which primitive logic gate should be active.  
@@ -100,6 +85,19 @@ using a single FPGA design.
 | NOT A | 1 | 1 | 0 |
 | NOT B  | 1 | 1 | 1 |
 
+
+---
+## Images
+
+### FPGA Setup
+
+![Setup](outputs/gates.jpeg)
+
+---
+
+## Logic Gate Outputs
+
+Add output images or videos here.
 
 ---
 

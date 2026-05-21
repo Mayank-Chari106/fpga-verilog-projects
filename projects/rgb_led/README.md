@@ -52,6 +52,12 @@ A simple Verilog FPGA project that cycles RGB LED colours using clock division o
 https://github.com/user-attachments/assets/f4eda74b-b679-4501-9c47-efcac0708e68
 
 
+## Waveform/Simulation
+
+![Waveform](outputs/rgb_wave.png)
+
+
+
 ---
 
 ## How It Works

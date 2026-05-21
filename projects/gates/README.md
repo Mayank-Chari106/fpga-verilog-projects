@@ -99,6 +99,11 @@ using a single FPGA design.
 
 Add output images or videos here.
 
+## Waveform/Simulation
+
+![Waveform](outputs/gates_wave.png)
+
+
 ---
 
 ## Future Improvements

@@ -82,6 +82,9 @@ This value controls the duty cycle of the output LED.
 
 add output video
 
+## Waveform/Simulation
+
+![Waveform](outputs/pwm_wave.png)
 
 ---
 

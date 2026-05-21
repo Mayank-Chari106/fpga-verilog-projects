@@ -35,6 +35,10 @@ A simple Verilog FPGA project used to verify FPGA programming and onboard LED fu
 
 https://github.com/user-attachments/assets/c4ca171e-5016-43cd-8d1a-54152894a19e
 
+## Waveform/Simulation
+
+![Waveform](outputs/blink_wave.png)
+
 ---
 
 ## How It Works

@@ -54,7 +54,7 @@ https://github.com/user-attachments/assets/f4eda74b-b679-4501-9c47-efcac0708e68
 
 ## Waveform/Simulation
 
-![Waveform](outputs/rgb_wave.png)
+![Waveform](outputs/rgb_led_wave.png)
 
 
 

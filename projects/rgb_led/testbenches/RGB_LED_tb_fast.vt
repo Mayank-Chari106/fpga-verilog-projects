@@ -1,0 +1,111 @@
+`timescale 1ns/1ps
+
+module RGB_LED_tb_fast;
+
+    reg clk;
+
+    wire LEDr;
+    wire LEDr_en;
+    wire LEDg;
+    wire LEDg_en;
+    wire LEDb;
+    wire LEDb_en;
+    wire clk_en;
+
+    integer errors;
+
+    RGB_LED dut (
+        .clk(clk),
+        .LEDr(LEDr),
+        .LEDr_en(LEDr_en),
+        .LEDg(LEDg),
+        .LEDg_en(LEDg_en),
+        .LEDb(LEDb),
+        .LEDb_en(LEDb_en),
+        .clk_en(clk_en)
+    );
+
+    // 100 MHz clock: 10 ns period
+    initial begin
+        clk = 1'b0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        $dumpfile("RGB_LED_tb_fast.vcd");
+        $dumpvars(0, RGB_LED_tb_fast);
+    end
+
+    task check_rgb;
+        input expected_r;
+        input expected_g;
+        input expected_b;
+        input [127:0] test_name;
+        begin
+            if (LEDr !== expected_r || LEDg !== expected_g || LEDb !== expected_b) begin
+                $display("FAIL: %0s | Expected RGB = %b%b%b, Got RGB = %b%b%b",
+                         test_name, expected_r, expected_g, expected_b, LEDr, LEDg, LEDb);
+                errors = errors + 1;
+            end else begin
+                $display("PASS: %0s | RGB = %b%b%b", test_name, LEDr, LEDg, LEDb);
+            end
+        end
+    endtask
+
+    task check_enable_pins;
+        begin
+            if (LEDr_en !== 1'b1 || LEDg_en !== 1'b1 || LEDb_en !== 1'b1 || clk_en !== 1'b1) begin
+                $display("FAIL: Enable pins are not all HIGH");
+                $display("LEDr_en=%b LEDg_en=%b LEDb_en=%b clk_en=%b", LEDr_en, LEDg_en, LEDb_en, clk_en);
+                errors = errors + 1;
+            end else begin
+                $display("PASS: All enable pins are HIGH");
+            end
+        end
+    endtask
+
+    task fast_tick_to_next_color;
+        begin
+            // Fast-forward the internal counter to the terminal count.
+            // This avoids simulating 50,000,000 clock cycles.
+            @(negedge clk);
+            dut.counter = 32'd50_000_000;
+            @(posedge clk);
+            #1;
+        end
+    endtask
+
+    initial begin
+        errors = 0;
+
+        #1;
+        $display("Starting FAST RGB_LED testbench...");
+
+        check_enable_pins();
+        check_rgb(1'b0, 1'b0, 1'b0, "Initial LED state");
+
+        fast_tick_to_next_color();
+        check_rgb(1'b1, 1'b0, 1'b1, "First color step: green ON if LEDs are active-low");
+
+        fast_tick_to_next_color();
+        check_rgb(1'b1, 1'b1, 1'b0, "Second color step: blue ON if LEDs are active-low");
+
+        fast_tick_to_next_color();
+        check_rgb(1'b1, 1'b1, 1'b1, "Third color step: all OFF if LEDs are active-low");
+
+        fast_tick_to_next_color();
+        check_rgb(1'b0, 1'b1, 1'b1, "Fourth color step: red ON if LEDs are active-low");
+
+        fast_tick_to_next_color();
+        check_rgb(1'b1, 1'b0, 1'b1, "Cycle repeats back to green");
+
+        if (errors == 0) begin
+            $display("ALL FAST TESTS PASSED");
+        end else begin
+            $display("FAST TESTS FAILED: %0d error(s)", errors);
+        end
+
+        $finish;
+    end
+
+endmodule

@@ -1,0 +1,70 @@
+`timescale 1ns / 1ps
+
+module blink_tb_full_cycle;
+
+    reg clk;
+    wire LED;
+    wire LED_en;
+    wire clk_en;
+
+    blink uut (
+        .clk(clk),
+        .LED(LED),
+        .LED_en(LED_en),
+        .clk_en(clk_en)
+    );
+
+    // 100 MHz clock: 10 ns period
+    initial begin
+        clk = 1'b0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        $dumpfile("blink_tb_full_cycle.vcd");
+        $dumpvars(0, blink_tb_full_cycle);
+
+        $display("Starting full-cycle blink testbench...");
+
+        #2;
+
+        if (LED_en !== 1'b1) begin
+            $display("ERROR: LED_en should be 1, got %b", LED_en);
+            $finish;
+        end
+
+        if (clk_en !== 1'b1) begin
+            $display("ERROR: clk_en should be 1, got %b", clk_en);
+            $finish;
+        end
+
+        if (LED !== 1'b0) begin
+            $display("ERROR: Initial LED should be 0, got %b", LED);
+            $finish;
+        end
+
+        $display("PASS: Initial outputs are correct.");
+
+        // Wait exactly 50,000,000 clock edges.
+        // LED should toggle once after this.
+        repeat (50_000_000) @(posedge clk);
+        #1;
+
+        if (LED !== 1'b1) begin
+            $display("ERROR: LED did not toggle after 50,000,000 cycles. LED = %b", LED);
+            $finish;
+        end
+
+        if (uut.counter !== 32'd0) begin
+            $display("ERROR: Counter did not reset. Counter = %0d", uut.counter);
+            $finish;
+        end
+
+        $display("PASS: LED toggled after 50,000,000 cycles.");
+        $display("ALL FULL-CYCLE TESTS PASSED.");
+
+        #20;
+        $finish;
+    end
+
+endmodule

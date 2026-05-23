@@ -1,0 +1,94 @@
+`timescale 1ns / 1ps
+
+module blink_tb;
+
+    // Testbench signals
+    reg clk;
+    wire LED;
+    wire LED_en;
+    wire clk_en;
+
+    // Instantiate the Unit Under Test (UUT)
+    blink uut (
+        .clk(clk),
+        .LED(LED),
+        .LED_en(LED_en),
+        .clk_en(clk_en)
+    );
+
+    // 100 MHz clock: 10 ns period
+    initial begin
+        clk = 1'b0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        // For waveform viewing in GTKWave / simulator
+        $dumpfile("blink_tb.vcd");
+        $dumpvars(0, blink_tb);
+
+        $display("Starting blink module testbench...");
+
+        // Wait for initial values to settle
+        #2;
+
+        // Check constant enable outputs
+        if (LED_en !== 1'b1) begin
+            $display("ERROR: LED_en should be 1, got %b", LED_en);
+            $finish;
+        end
+
+        if (clk_en !== 1'b1) begin
+            $display("ERROR: clk_en should be 1, got %b", clk_en);
+            $finish;
+        end
+
+        $display("PASS: Enable outputs are correct.");
+
+        // Fast-forward internal counter to avoid simulating 50 million cycles
+        uut.counter = 32'd49_999_998;
+        uut.LED_status = 1'b0;
+
+        $display("Counter fast-forwarded to %0d", uut.counter);
+        $display("Initial LED = %b", LED);
+
+        // First clock edge: counter reaches 49,999,999, LED should not toggle yet
+        @(posedge clk);
+        #1;
+        if (LED !== 1'b0) begin
+            $display("ERROR: LED toggled too early. LED = %b", LED);
+            $finish;
+        end
+        $display("PASS: LED did not toggle early.");
+
+        // Second clock edge: counter equals 49,999,999, LED should toggle
+        @(posedge clk);
+        #1;
+        if (LED !== 1'b1) begin
+            $display("ERROR: LED did not toggle. LED = %b", LED);
+            $finish;
+        end
+        $display("PASS: LED toggled correctly.");
+
+        // Counter should reset to zero after toggle
+        if (uut.counter !== 32'd0) begin
+            $display("ERROR: Counter did not reset. Counter = %0d", uut.counter);
+            $finish;
+        end
+        $display("PASS: Counter reset correctly.");
+
+        // Test one more partial count after reset
+        @(posedge clk);
+        #1;
+        if (uut.counter !== 32'd1) begin
+            $display("ERROR: Counter did not increment after reset. Counter = %0d", uut.counter);
+            $finish;
+        end
+        $display("PASS: Counter increments after reset.");
+
+        $display("ALL TESTS PASSED.");
+        #20;
+        $finish;
+    end
+
+endmodule

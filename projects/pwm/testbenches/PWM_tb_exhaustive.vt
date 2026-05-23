@@ -1,0 +1,159 @@
+`timescale 1ns/1ps
+
+// Self-checking testbench for PWM.v
+// Checks:
+// 1. Enable pin directions/values
+// 2. PWM duty count for each switch setting over one full 8-bit period
+
+module PWM_tb_exhaustive;
+
+    reg clk;
+    reg S0;
+    reg S1;
+    reg S2;
+
+    wire clk_en;
+    wire S0_en;
+    wire S1_en;
+    wire S2_en;
+    wire Y;
+    wire Y_en;
+
+    integer i;
+    integer high_count;
+    integer expected_brightness;
+    integer errors;
+
+    PWM dut (
+        .clk(clk),
+        .clk_en(clk_en),
+
+        .S0(S0),
+        .S0_en(S0_en),
+
+        .S1(S1),
+        .S1_en(S1_en),
+
+        .S2(S2),
+        .S2_en(S2_en),
+
+        .Y(Y),
+        .Y_en(Y_en)
+    );
+
+    // 100 MHz simulation clock: 10 ns period
+    initial begin
+        clk = 1'b0;
+        forever #5 clk = ~clk;
+    end
+
+    task set_switches;
+        input [2:0] sw;
+        begin
+            {S2, S1, S0} = sw;
+            #1;
+        end
+    endtask
+
+    task check_enable_pins;
+        begin
+            if (clk_en !== 1'b1) begin
+                $display("ERROR: clk_en should be 1, got %b", clk_en);
+                errors = errors + 1;
+            end
+
+            if (S0_en !== 1'b0) begin
+                $display("ERROR: S0_en should be 0, got %b", S0_en);
+                errors = errors + 1;
+            end
+
+            if (S1_en !== 1'b0) begin
+                $display("ERROR: S1_en should be 0, got %b", S1_en);
+                errors = errors + 1;
+            end
+
+            if (S2_en !== 1'b0) begin
+                $display("ERROR: S2_en should be 0, got %b", S2_en);
+                errors = errors + 1;
+            end
+
+            if (Y_en !== 1'b1) begin
+                $display("ERROR: Y_en should be 1, got %b", Y_en);
+                errors = errors + 1;
+            end
+        end
+    endtask
+
+    task check_pwm_duty;
+        input [2:0] sw;
+        input integer expected;
+        begin
+            set_switches(sw);
+
+            // Align to one complete PWM counter period.
+            // Counter is 8-bit, so one PWM frame = 256 clock cycles.
+            high_count = 0;
+
+            for (i = 0; i < 256; i = i + 1) begin
+                @(posedge clk);
+                #1;
+                if (Y === 1'b1) begin
+                    high_count = high_count + 1;
+                end
+            end
+
+            if (high_count !== expected) begin
+                $display("ERROR: S2S1S0=%b expected high_count=%0d, got=%0d",
+                         sw, expected, high_count);
+                errors = errors + 1;
+            end else begin
+                $display("PASS : S2S1S0=%b high_count=%0d/256", sw, high_count);
+            end
+        end
+    endtask
+
+    initial begin
+        $dumpfile("PWM_tb_exhaustive.vcd");
+        $dumpvars(0, PWM_tb_exhaustive);
+
+        errors = 0;
+
+        S0 = 1'b0;
+        S1 = 1'b0;
+        S2 = 1'b0;
+
+        #2;
+        check_enable_pins();
+
+        // Valid brightness levels from PWM.v:
+        // 000 -> 0
+        // 001 -> 64
+        // 010 -> 128
+        // 011 -> 192
+        // 100 -> 255
+        // others -> 0
+        check_pwm_duty(3'b000, 0);
+        check_pwm_duty(3'b001, 64);
+        check_pwm_duty(3'b010, 128);
+        check_pwm_duty(3'b011, 192);
+        check_pwm_duty(3'b100, 255);
+
+        // Default cases
+        check_pwm_duty(3'b101, 0);
+        check_pwm_duty(3'b110, 0);
+        check_pwm_duty(3'b111, 0);
+
+        if (errors == 0) begin
+            $display("====================================");
+            $display("ALL PWM TESTS PASSED");
+            $display("====================================");
+        end else begin
+            $display("====================================");
+            $display("PWM TESTS FAILED: %0d error(s)", errors);
+            $display("====================================");
+        end
+
+        $finish;
+    end
+
+endmodule

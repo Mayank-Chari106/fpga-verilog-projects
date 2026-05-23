@@ -1,0 +1,79 @@
+`timescale 1ns/1ps
+
+// Waveform-focused testbench for PWM.v
+// Open PWM_tb_waveform.vcd in a waveform viewer to see duty-cycle changes.
+
+module PWM_tb_waveform;
+
+    reg clk;
+    reg S0;
+    reg S1;
+    reg S2;
+
+    wire clk_en;
+    wire S0_en;
+    wire S1_en;
+    wire S2_en;
+    wire Y;
+    wire Y_en;
+
+    PWM dut (
+        .clk(clk),
+        .clk_en(clk_en),
+
+        .S0(S0),
+        .S0_en(S0_en),
+
+        .S1(S1),
+        .S1_en(S1_en),
+
+        .S2(S2),
+        .S2_en(S2_en),
+
+        .Y(Y),
+        .Y_en(Y_en)
+    );
+
+    // 100 MHz simulation clock: 10 ns period
+    initial begin
+        clk = 1'b0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        $dumpfile("PWM_tb_waveform.vcd");
+        $dumpvars(0, PWM_tb_waveform);
+
+        S0 = 1'b0;
+        S1 = 1'b0;
+        S2 = 1'b0;
+
+        // Each setting runs for one full 8-bit PWM period.
+        {S2, S1, S0} = 3'b000;   // 0/256 duty
+        repeat (256) @(posedge clk);
+
+        {S2, S1, S0} = 3'b001;   // 64/256 duty
+        repeat (256) @(posedge clk);
+
+        {S2, S1, S0} = 3'b010;   // 128/256 duty
+        repeat (256) @(posedge clk);
+
+        {S2, S1, S0} = 3'b011;   // 192/256 duty
+        repeat (256) @(posedge clk);
+
+        {S2, S1, S0} = 3'b100;   // 255/256 duty
+        repeat (256) @(posedge clk);
+
+        {S2, S1, S0} = 3'b101;   // default case: 0/256 duty
+        repeat (256) @(posedge clk);
+
+        {S2, S1, S0} = 3'b110;   // default case: 0/256 duty
+        repeat (256) @(posedge clk);
+
+        {S2, S1, S0} = 3'b111;   // default case: 0/256 duty
+        repeat (256) @(posedge clk);
+
+        $finish;
+    end
+
+endmodule

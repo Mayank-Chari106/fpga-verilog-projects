@@ -1,0 +1,144 @@
+`timescale 1ns/1ps
+
+module Gates_tb_exhaustive;
+
+    reg clk;
+    reg A;
+    reg B;
+    reg S0;
+    reg S1;
+    reg S2;
+
+    wire Y;
+    wire Y_en;
+    wire A_en;
+    wire B_en;
+    wire S0_en;
+    wire S1_en;
+    wire S2_en;
+
+    integer errors;
+    integer total_tests;
+    integer sel;
+    integer aval;
+    integer bval;
+
+    reg expected;
+
+    gates uut (
+        .clk(clk),
+        .Y(Y),
+        .Y_en(Y_en),
+        .A(A),
+        .A_en(A_en),
+        .B(B),
+        .B_en(B_en),
+        .S0(S0),
+        .S0_en(S0_en),
+        .S1(S1),
+        .S1_en(S1_en),
+        .S2(S2),
+        .S2_en(S2_en)
+    );
+
+    always #5 clk = ~clk;
+
+    task calc_expected;
+        input [2:0] op;
+        input a_in;
+        input b_in;
+        output y_out;
+        begin
+            case (op)
+                3'b000: y_out = a_in & b_in;     // AND
+                3'b001: y_out = a_in | b_in;     // OR
+                3'b010: y_out = a_in ^ b_in;     // XOR
+                3'b011: y_out = ~(a_in & b_in);  // NAND
+                3'b100: y_out = ~(a_in | b_in);  // NOR
+                3'b101: y_out = a_in ~^ b_in;    // XNOR
+                3'b110: y_out = ~a_in;           // NOT A
+                3'b111: y_out = ~b_in;           // NOT B
+                default: y_out = 1'b0;
+            endcase
+        end
+    endtask
+
+    task check_output;
+        input [2:0] op;
+        input a_in;
+        input b_in;
+        begin
+            {S2, S1, S0} = op;
+            A = a_in;
+            B = b_in;
+            #1;
+
+            calc_expected(op, a_in, b_in, expected);
+            total_tests = total_tests + 1;
+
+            if (Y !== expected) begin
+                $display("FAIL: S2S1S0=%b A=%b B=%b | Expected Y=%b Got Y=%b",
+                         op, a_in, b_in, expected, Y);
+                errors = errors + 1;
+            end
+            else begin
+                $display("PASS: S2S1S0=%b A=%b B=%b | Y=%b",
+                         op, a_in, b_in, Y);
+            end
+        end
+    endtask
+
+    initial begin
+        $dumpfile("Gates_tb_exhaustive.vcd");
+        $dumpvars(0, Gates_tb_exhaustive);
+
+        clk = 1'b0;
+        A = 1'b0;
+        B = 1'b0;
+        S0 = 1'b0;
+        S1 = 1'b0;
+        S2 = 1'b0;
+        errors = 0;
+        total_tests = 0;
+
+        #2;
+
+        // Check GPIO direction enable outputs
+        if (Y_en !== 1'b1) begin
+            $display("FAIL: Y_en should be 1, got %b", Y_en);
+            errors = errors + 1;
+        end
+        if (A_en !== 1'b0 || B_en !== 1'b0 || S0_en !== 1'b0 || S1_en !== 1'b0 || S2_en !== 1'b0) begin
+            $display("FAIL: Input enable pins should be 0. Got A_en=%b B_en=%b S0_en=%b S1_en=%b S2_en=%b",
+                     A_en, B_en, S0_en, S1_en, S2_en);
+            errors = errors + 1;
+        end
+        else begin
+            $display("PASS: GPIO enable pins are correct");
+        end
+
+        // Exhaustive logic test: 8 select values x 4 A/B values = 32 tests
+        for (sel = 0; sel < 8; sel = sel + 1) begin
+            for (aval = 0; aval < 2; aval = aval + 1) begin
+                for (bval = 0; bval < 2; bval = bval + 1) begin
+                    check_output(sel[2:0], aval[0], bval[0]);
+                    #9;
+                end
+            end
+        end
+
+        $display("-----------------------------------------");
+        $display("Total logic tests = %0d", total_tests);
+
+        if (errors == 0) begin
+            $display("RESULT: ALL TESTS PASSED");
+        end
+        else begin
+            $display("RESULT: %0d TEST(S) FAILED", errors);
+        end
+
+        $display("-----------------------------------------");
+        $finish;
+    end
+
+endmodule

@@ -1,0 +1,103 @@
+`timescale 1ns/1ps
+
+module RGB_LED_tb_full_cycle;
+
+    reg clk;
+
+    wire LEDr;
+    wire LEDr_en;
+    wire LEDg;
+    wire LEDg_en;
+    wire LEDb;
+    wire LEDb_en;
+    wire clk_en;
+
+    integer errors;
+    integer i;
+
+    RGB_LED dut (
+        .clk(clk),
+        .LEDr(LEDr),
+        .LEDr_en(LEDr_en),
+        .LEDg(LEDg),
+        .LEDg_en(LEDg_en),
+        .LEDb(LEDb),
+        .LEDb_en(LEDb_en),
+        .clk_en(clk_en)
+    );
+
+    // 100 MHz clock: 10 ns period
+    initial begin
+        clk = 1'b0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        $dumpfile("RGB_LED_tb_full_cycle.vcd");
+        $dumpvars(0, RGB_LED_tb_full_cycle);
+    end
+
+    task wait_one_color_period;
+        begin
+            // The design updates when the OLD counter value is 50,000,000.
+            // Starting from zero, that requires 50,000,001 rising edges.
+            for (i = 0; i < 50_000_001; i = i + 1) begin
+                @(posedge clk);
+            end
+            #1;
+        end
+    endtask
+
+    task check_rgb;
+        input expected_r;
+        input expected_g;
+        input expected_b;
+        input [127:0] test_name;
+        begin
+            if (LEDr !== expected_r || LEDg !== expected_g || LEDb !== expected_b) begin
+                $display("FAIL: %0s | Expected RGB = %b%b%b, Got RGB = %b%b%b",
+                         test_name, expected_r, expected_g, expected_b, LEDr, LEDg, LEDb);
+                errors = errors + 1;
+            end else begin
+                $display("PASS: %0s | RGB = %b%b%b", test_name, LEDr, LEDg, LEDb);
+            end
+        end
+    endtask
+
+    initial begin
+        errors = 0;
+
+        #1;
+        $display("Starting FULL-CYCLE RGB_LED testbench...");
+
+        if (LEDr_en !== 1'b1 || LEDg_en !== 1'b1 || LEDb_en !== 1'b1 || clk_en !== 1'b1) begin
+            $display("FAIL: Enable pins are not all HIGH");
+            errors = errors + 1;
+        end else begin
+            $display("PASS: All enable pins are HIGH");
+        end
+
+        check_rgb(1'b0, 1'b0, 1'b0, "Initial LED state");
+
+        wait_one_color_period();
+        check_rgb(1'b1, 1'b0, 1'b1, "After first full count");
+
+        wait_one_color_period();
+        check_rgb(1'b1, 1'b1, 1'b0, "After second full count");
+
+        wait_one_color_period();
+        check_rgb(1'b1, 1'b1, 1'b1, "After third full count");
+
+        wait_one_color_period();
+        check_rgb(1'b0, 1'b1, 1'b1, "After fourth full count");
+
+        if (errors == 0) begin
+            $display("ALL FULL-CYCLE TESTS PASSED");
+        end else begin
+            $display("FULL-CYCLE TESTS FAILED: %0d error(s)", errors);
+        end
+
+        $finish;
+    end
+
+endmodule

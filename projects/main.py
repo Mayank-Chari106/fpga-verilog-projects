@@ -8,10 +8,10 @@ import os
 # ROTARY ENCODER PIN CONFIGURATION
 # =================================================
 # EC11 rotary encoder module:
-# CLK -> GP2
-# DT  -> GP3
-# SW  -> GP4
-# +   -> 3V3
+# CLK -> GP7
+# DT  -> GP6
+# SW  -> GP5
+# +   -> 3.3V
 # GND -> GND
 
 ENC_A_PIN = 7       # CLK
@@ -19,9 +19,7 @@ ENC_B_PIN = 6       # DT
 ENC_SW_PIN = 5      # SW
 
 
-# =================================================
-# FPGA PROGRAM LIST
-# =================================================
+
 
 PROGRAMS = [
     ("Blink", "blink.bin"),
@@ -33,18 +31,14 @@ PROGRAMS = [
 STATE_FILE = "last_program.txt"
 
 
-# =================================================
-# PIN SETUP
-# =================================================
+
 
 enc_a = Pin(ENC_A_PIN, Pin.IN, Pin.PULL_UP)
 enc_b = Pin(ENC_B_PIN, Pin.IN, Pin.PULL_UP)
 enc_sw = Pin(ENC_SW_PIN, Pin.IN, Pin.PULL_UP)
 
 
-# =================================================
-# FILE AND STATE FUNCTIONS
-# =================================================
+
 
 def file_exists(filename):
     try:
@@ -79,9 +73,7 @@ def save_last_index(index):
         print("Could not save state:", e)
 
 
-# =================================================
-# FPGA FLASH FUNCTION
-# =================================================
+
 
 def flash_program(index):
     name, filename = PROGRAMS[index]
@@ -109,9 +101,7 @@ def flash_program(index):
         return False
 
 
-# =================================================
-# EC11 ROTARY ENCODER READER
-# =================================================
+
 
 encoder_last_state = (enc_a.value() << 1) | enc_b.value()
 encoder_accumulator = 0
@@ -120,9 +110,9 @@ encoder_accumulator = 0
 def read_encoder_step():
     """
     Returns:
-       1  = clockwise
-      -1  = counter-clockwise
-       0  = no completed step
+        1  = clockwise
+        -1  = counter-clockwise
+        0  = no completed step
     """
 
     global encoder_last_state
@@ -136,7 +126,6 @@ def read_encoder_step():
     if current_state != encoder_last_state:
         transition = (encoder_last_state << 2) | current_state
 
-        # Direction 1
         if transition in (
             0b0001,
             0b0111,
@@ -145,7 +134,6 @@ def read_encoder_step():
         ):
             encoder_accumulator += 1
 
-        # Direction 2
         elif transition in (
             0b0010,
             0b1011,
@@ -156,7 +144,6 @@ def read_encoder_step():
 
         encoder_last_state = current_state
 
-        # EC11 usually gives 4 transitions per physical click
         if encoder_accumulator >= 4:
             encoder_accumulator = 0
             return 1
@@ -168,9 +155,7 @@ def read_encoder_step():
     return 0
 
 
-# =================================================
-# ENCODER SWITCH FUNCTION
-# =================================================
+
 
 def switch_pressed():
     if enc_sw.value() == 0:
@@ -186,9 +171,7 @@ def switch_pressed():
     return False
 
 
-# =================================================
-# STARTUP
-# =================================================
+
 
 selected = load_last_index()
 
@@ -198,7 +181,6 @@ print("Shrike-Lite FPGA Program Selector")
 print("=================================")
 print("Last saved program:", PROGRAMS[selected][1])
 
-# Automatically flash last saved program on boot
 flash_program(selected)
 
 print()
@@ -207,9 +189,7 @@ print("Press encoder switch to flash and save.")
 print("Current selection:", PROGRAMS[selected][1])
 
 
-# =================================================
-# MAIN LOOP
-# =================================================
+
 
 while True:
     step = read_encoder_step()
